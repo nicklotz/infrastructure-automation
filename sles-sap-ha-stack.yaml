@@ -1,0 +1,81 @@
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# Put all your resources under `resources:`. For each resource, you need:
+# - The type of resource. In this example, the type is a Compute VM instance.
+# - An internal name for the resource.
+# - The properties for the resource. In this example, for VM instances, you add
+#   the machine type, a boot disk, network information, and so on.
+#
+# For a list of supported resources,
+# see https://cloud.google.com/deployment-manager/docs/configuration/supported-resource-types.
+
+# This file deploys three SLES-15-SAP instances in Google Cloud Platform using Deployment Manager
+
+
+resources:
+- type: compute.v1.instance
+  name: sles-sap-ha-1
+  properties:
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/zones/us-east1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/suse-sap-cloud/global/images/family/sles-15-sap
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/global/networks/default
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+
+- type: compute.v1.instance
+  name: sles-sap-ha-2
+  properties:
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/zones/us-east1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/suse-sap-cloud/global/images/family/sles-15-sap
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/global/networks/default
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+
+- type: compute.v1.instance
+  name: sles-sap-ha-3
+  properties:
+    zone: us-east1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/zones/us-east1-b/machineTypes/n1-standard-1
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/suse-sap-cloud/global/images/family/sles-15-sap
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/engaged-range-188501/global/networks/default
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
