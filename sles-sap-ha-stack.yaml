@@ -43,6 +43,15 @@ resources:
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #/bin/bash
+          sudo ha-cluster-init -qy ssh 
+          sudo ha-cluster-init -qy csync2 
+          sudo ha-cluster-init -qy corosync 
+          sudo ha-cluster-init -qy cluster
 
 - type: compute.v1.instance
   name: sles-sap-ha-2
