@@ -24,10 +24,17 @@ sleep 30s
 
 echo "Refreshing package repositories"
 sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_2_PUBLIC 'zypper ar http://download.opensuse.org/tumbleweed/repo/oss/ Tumbleweed; zypper --gpg-auto-import-keys ref; zypper in -y sshpass' > /dev/null 2> /dev/null
+sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_3_PUBLIC 'zypper ar http://download.opensuse.org/tumbleweed/repo/oss/ Tumbleweed; zypper --gpg-auto-import-keys ref; zypper in -y sshpass' > /dev/null 2> /dev/null
 
 echo "Configuring cluster membership"
 sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_2_PUBLIC 'ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ""' > /dev/null 2> /dev/null
 sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_2_PUBLIC "sshpass -p temppass ssh-copy-id -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@$HA_MEMBER_INIT" > /dev/null 2> /dev/null
 sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_2_PUBLIC "ha-cluster-join -qy -c $HA_MEMBER_INIT"
-sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_2_PUBLIC "crm status"
+sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_3_PUBLIC 'ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ""' > /dev/null 2> /dev/null
+sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_3_PUBLIC "sshpass -p temppass ssh-copy-id -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@$HA_MEMBER_INIT" > /dev/null 2> /dev/null
+sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_3_PUBLIC "ha-cluster-join -qy -c $HA_MEMBER_INIT"
+
+
+
+sshpass -p "temppass" ssh -o StrictHostKeyChecking=no root@$HA_MEMBER_INIT_PUBLIC "crm status"
 
